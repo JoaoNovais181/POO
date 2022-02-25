@@ -28,6 +28,7 @@ public class Ficha1
 
     public void doisIntMedia (Scanner sc)
     {
+        System.out.println("Introduza 2 inteiros");
         int a = sc.nextInt();
         int b = sc.nextInt();
 
