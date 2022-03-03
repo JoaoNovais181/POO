@@ -1,17 +1,24 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Ficha2
+public class Ficha2ex1
 {
     
     int [] valores;
     Scanner scanner;
+    // boolean preenchido;
 
-    public Ficha2 (int N, Scanner sc)
+    public Ficha2ex1 (int N, Scanner sc)
     {
         valores = new int[N];
         scanner = sc;
+        // preenchido = false;
     }
+
+    // public boolean esta_preenchido ()
+    // {
+        // return preenchido;
+    // }
 
     public int ex1a ()
     {
@@ -39,21 +46,22 @@ public class Ficha2
         return r;
     }
 
-    public int[] ex1c ()
+    public int[] ex1c (int[] v2)
     {
-        int[] v2 = new int[valores.length];
-        System.out.println("Insira " + valores.length + " inteiros para o segundo array");
-        for (int i=0 ; i<v2.length ; i++) 
-            v2[i] = scanner.nextInt();
-
+        // int[] v2 = new int[valores.length];
+        // System.out.println("Insira " + valores.length + " inteiros para o segundo array");
+        // for (int i=0 ; i<v2.length ; i++) 
+            // v2[i] = scanner.nextInt();
         int[] v = new int[valores.length];
         int j=0;
-        for (int i=0 ; i<valores.length ; i++)
-            for (int valor: valores)
-                if (valor==v2[i]) v[j++] = v2[i];
+        for (int valor1 : v2)
+            for (int valor : valores)
+                if (valor==valor1) v[j++] = valor1;
 
+        int[] r = new int[j];
+        System.arraycopy(v, 0, r, 0, j);
 
-        return v;
+        return r;
     }
  
 }
