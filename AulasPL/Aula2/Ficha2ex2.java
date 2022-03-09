@@ -1,6 +1,3 @@
-import java.util.Arrays;
-
-import javax.print.attribute.standard.MediaSize.NA;
 
 public class Ficha2ex2
 {

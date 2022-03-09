@@ -88,6 +88,16 @@ public class Main
 
                 System.out.println("As datas sao: " + ex3.toString());
             }
+            else if (arg.equals("4"))
+            {
+                int[] v = {9, 4, 14, 51, 1, -14, -1, 93, 2, 9, 0};
+                Ficha2ex4 ex4 = new Ficha2ex4(v);
+                System.out.println("Array antes de ordenar: " + Arrays.toString(ex4.getArray()));
+                ex4.sort(0, v.length);
+                System.out.println("Array após ordenar: " + Arrays.toString(ex4.getArray()));
+                System.out.println("Procura de 9 no array: " + ex4.search(9));
+                System.out.println("Procura de 3 no array: " + ex4.search(3));
+            }
         }
 
         sc.close();
