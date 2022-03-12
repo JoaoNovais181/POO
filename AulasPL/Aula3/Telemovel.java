@@ -27,7 +27,7 @@ public class Telemovel {
         this.numApps = 0;
     }
 
-    public Telemovel (String marca, String modelo, int displayX, int displayY, byte armMsg, byte armFoto, byte armApp, byte armMax)
+    public Telemovel (String marca, String modelo, int displayX, int displayY, byte armMsg, byte armFoto, byte armApp, int armMax)
     {
         this.marca = new String(marca);
         this.modelo = new String(modelo);
@@ -88,6 +88,81 @@ public class Telemovel {
         this.numApps = t.numApps;
     }
 
+    public String getMarca ()
+    {
+        return this.marca;
+    }
+
+    public String getModelo ()
+    {
+        return this.modelo;
+    }
+
+    public int getDisplayX ()
+    {
+        return this.displayX;
+    }
+
+    public int getDisplayY ()
+    {
+        return this.displayY;
+    }
+
+    public int getArmOcupado ()
+    {
+        return this.armOcupado;
+    }
+
+    public int getArmFotoAppTotal ()
+    {
+        return this.armFotoAppTotal;
+    }
+
+    public int getArmMax ()
+    {
+        return this.armMax;
+    }
+
+    public int getNumMsg ()
+    {
+        return this.numMsg;
+    }
+
+    public int getNumApps ()
+    {
+        return this.numApps;
+    }
+
+    public int getNumFoto ()
+    {
+        return this.numFoto;
+    }
+
+    public byte getArmMsg ()
+    {
+        return this.armMsg;
+    }
+
+    public byte getArmFoto ()
+    {
+        return this.armFoto;
+    }
+
+    public byte getArmApp ()
+    {
+        return this.armApp;
+    }
+
+    public String[] getMsgs ()
+    {
+        return this.msgs.clone();
+    }
+
+    public String[] getApps ()
+    {
+        return this.apps.clone();
+    }
+
     public Telemovel clone ()
     {
         return new Telemovel(this);
@@ -102,7 +177,8 @@ public class Telemovel {
 
     /**
      * Metodo para verificar se é igual a outro objeto
-     * Falta acabar de definir o metodo
+     * @param obj Objeto a comparar
+     * @return true se o objeto for um objeto do tipo telemovel equivalente a este telemóvel
      */
     public boolean equals(Object obj) 
     {
@@ -112,8 +188,16 @@ public class Telemovel {
         if ( (obj==null) || (this.getClass() != obj.getClass()))
             return false;
 
-        //todo acabar isto
-        return true;
+        Telemovel o = (Telemovel) obj;
+        
+        return (this.marca.equals(o.getMarca())) && (this.modelo.equals(o.getModelo()))
+            && (this.displayX == o.getDisplayX()) && (this.displayY == o.getDisplayY())
+            && (this.armMsg == o.getArmMsg()) && (this.armFoto == o.getArmFoto())
+            && (this.armApp == o.getArmApp()) && (this.armFotoAppTotal == o.getArmFotoAppTotal())
+            && (this.armOcupado == o.getArmOcupado()) && (this.armMax == o.getArmMax())
+            && (this.numApps == o.getNumApps()) && (this.numFoto == o.getNumFoto())
+            && (this.numMsg == o.getNumMsg()) && (this.apps.equals(o.getApps()))
+            && (this.msgs.equals(o.getMsgs()));
     }
 
     public boolean existeEspaco (int numeroBytes)
@@ -125,8 +209,75 @@ public class Telemovel {
     {
         if (existeEspaco(tamanho) && (tamanho<this.armApp))
         {
-            apps[this.numApps++] = new String(nome);
+            if (this.apps.length <= this.numApps)
+            {
+                String[] novo = new String[(int)(this.apps.length*0.3)];
+                System.arraycopy(this.apps, 0, novo, 0, this.numApps);
+                this.apps = novo;
+            }
+            this.apps[this.numApps++] = new String(nome);
             this.armOcupado += tamanho;
+            this.armFotoAppTotal += tamanho;
+        }
+    }
+
+    public void recebeMsg (String msg)
+    {
+        if (existeEspaco(msg.length()) && (msg.length() < this.armMsg))
+        {
+            if (this.msgs.length <= this.numMsg)
+            {
+                String[] novo = new String[(int)(this.msgs.length*0.3)];
+                System.arraycopy(this.msgs, 0, novo, 0, this.numMsg);
+                this.msgs = novo;
+            }
+            this.msgs[this.numMsg++] = new String(msg);
+            this.armOcupado += msg.length();
+        }
+    }
+
+    public double tamMedioApps ()
+    {
+        return (double)this.armFotoAppTotal / this.numApps;
+    } 
+
+    public String maiorMsg()
+    {
+        if (this.numMsg > 0)
+        {
+            int maior = this.msgs[0].length(), mindx = 0;
+
+            for (int i=1 ; i<this.numMsg ; i++)
+            {
+                if (this.msgs[i].length() > maior)
+                {
+                    mindx = i;
+                }    
+            }
+
+            return this.msgs[mindx];
+        }
+
+        return "Não há Msgs";
+    }
+
+    public void removeApp(String nome, int tamanho)
+    {
+        boolean found = false;
+
+        for (int i=0 ; i<this.numApps && !found ; i++)
+        {
+            if (this.apps[i].equals(nome))
+            {
+                for (int j=i ; j<this.numApps-1 ; j++)
+                {
+                    this.apps[j] = this.apps[j+1];
+                }
+                this.numApps--;
+                this.armOcupado -= tamanho;
+                this.armFotoAppTotal -= tamanho;
+                found = true;
+            }
         }
     }
 }
