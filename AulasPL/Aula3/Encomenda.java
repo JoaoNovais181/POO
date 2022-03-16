@@ -1,5 +1,5 @@
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Encomenda
@@ -9,7 +9,8 @@ public class Encomenda {
     private String nomeCliente, NIFCliente, moradaCliente;
     private int numeroEncomenda;
     private LocalDate dataEncomenda;
-    private LinhaEncomenda[] linhasEncomenda;
+    private ArrayList<LinhaEncomenda> linhasEncomenda;
+    // private LinhaEncomenda[] linhasEncomenda;
 
     public Encomenda ()
     {
@@ -18,18 +19,17 @@ public class Encomenda {
         this.moradaCliente = "Nao tem";
         this.numeroEncomenda = -1;
         this.dataEncomenda = null;
-        this.linhasEncomenda = null;
+        this.linhasEncomenda = new ArrayList<LinhaEncomenda>();
     }
 
-    public Encomenda (String nomeCliente, String NIFCliente, String moradaCliente, int numeroEncomenda, LocalDate dataEncomenda, LinhaEncomenda[] le)
+    public Encomenda (String nomeCliente, String NIFCliente, String moradaCliente, int numeroEncomenda, LocalDate dataEncomenda, ArrayList<LinhaEncomenda> le)
     {
         this.nomeCliente = nomeCliente;
         this.NIFCliente = NIFCliente;
         this.moradaCliente = moradaCliente;
         this.numeroEncomenda = numeroEncomenda;
         this.dataEncomenda = dataEncomenda;
-        this.linhasEncomenda = new LinhaEncomenda[le.length];
-        System.arraycopy(le, 0, this.linhasEncomenda, 0, le.length);
+        this.linhasEncomenda = new ArrayList<LinhaEncomenda>(le);
     }
 
     public Encomenda (Encomenda enc)
@@ -39,14 +39,14 @@ public class Encomenda {
         this.moradaCliente = enc.getMoradaCliente();
         this.numeroEncomenda = enc.getNumeroEncomenda();
         this.dataEncomenda = enc.getDataEncomenda();
-        this.linhasEncomenda = enc.getLinhaEncomenda();  
+        this.linhasEncomenda = new ArrayList<LinhaEncomenda>(enc.getLinhaEncomenda());  
     }
 
     public String toString ()
     {
         return "Nome Cliente: " + this.nomeCliente + "\nNIF do Cliente: " + this.NIFCliente + 
             "\nMorada do Cliente: " + this.moradaCliente + "\nNumero da encomenda: " + this.numeroEncomenda
-            + "\nData da encomenda: " + this.dataEncomenda.toString() + "\nLinhas de Encomenda: " + Arrays.toString(this.linhasEncomenda);
+            + "\nData da encomenda: " + this.dataEncomenda.toString() + "\nLinhas de Encomenda: " + this.linhasEncomenda.toString();
     }
 
     public String getNomeCliente ()
@@ -99,14 +99,14 @@ public class Encomenda {
         this.dataEncomenda = dataEncomenda;
     }
 
-    public LinhaEncomenda[] getLinhaEncomenda ()
+    public ArrayList<LinhaEncomenda> getLinhaEncomenda ()
     {
-        return linhasEncomenda.clone();
+        return new ArrayList<LinhaEncomenda> (this.linhasEncomenda);
     }
 
-    public void setLinhasEncomenda (LinhaEncomenda[] le)
+    public void setLinhasEncomenda (ArrayList<LinhaEncomenda> le)
     {
-        this.linhasEncomenda = le.clone();
+        this.linhasEncomenda = new ArrayList<LinhaEncomenda>(le);
     }
 
     public double calculaValorTotal ()
@@ -148,10 +148,7 @@ public class Encomenda {
 
     public void adicionaLinha (LinhaEncomenda linha)
     {
-        LinhaEncomenda[] le = new LinhaEncomenda[this.linhasEncomenda.length + 1];
-        System.arraycopy(this.linhasEncomenda, 0, le, 0, this.linhasEncomenda.length);
-        le[le.length-1] = linha.clone();
-        this.linhasEncomenda = le;
+        this.linhasEncomenda.add(linha.clone());
     }
 
     public void removeProduto (String codProd)
@@ -164,10 +161,10 @@ public class Encomenda {
             i++;
         }
 
-        LinhaEncomenda[] le = new LinhaEncomenda[this.linhasEncomenda.length - 1];
-        System.arraycopy(this.linhasEncomenda, 0, le, 0, i);
-        System.arraycopy(this.linhasEncomenda, i+1, le, i, le.length - i);
-        this.linhasEncomenda = le;
+        if (i<this.linhasEncomenda.size())
+        {
+            this.linhasEncomenda.remove(i);
+        }
     }
 
 }
