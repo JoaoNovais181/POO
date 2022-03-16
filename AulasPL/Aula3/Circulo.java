@@ -5,7 +5,8 @@
 */
 public class Circulo
 {
-    private double x,y, raio;
+    private Ponto centro;
+    private double raio;
 
     /**Construtores da classe Circulo.
      * Declaraçao dos construtores por omissao, parametrizado e de cópia
@@ -14,8 +15,7 @@ public class Circulo
     /** Construtor por omissao de um Circulo */
     public Circulo()
     {
-        this.x = 0;
-        this.y = 0;
+        this.centro = new Ponto();
         this.raio = 0;
     }
 
@@ -25,10 +25,9 @@ public class Circulo
      * @param y Coordenada no eixo das ordenadas do centro do Círculo
      * @param raio Valor do raio do Círculo
     */
-    public Circulo(double x, double y, double raio)
+    public Circulo(Ponto centro, double raio)
     {
-        this.x = x;
-        this.y = y;
+        this.centro = new Ponto(centro);
         this.raio = raio;
     }
 
@@ -38,27 +37,17 @@ public class Circulo
     */
     public Circulo(Circulo c)
     {
-        this.x = c.getX();
-        this.y = c.getY();
+        this.centro = new Ponto(c.getCentro());
         this.raio = c.getRaio();
     }
 
-    /** Devolve o valor da coordenada em x do centro do Circulo
+    /** Devolve o valor das coordenadas do centro do Circulo
      * 
-     * @return coordenada em x do centro do Circulo
+     * @return instancia da classe Ponto representante do centro do circulo
      */
-    public double getX()
+    public Ponto getCentro()
     {
-        return x;
-    }    
-
-    /** Devolve o valor da coordenada em y do centro do Circulo
-     * 
-     * @return coordenada em y do centro do Circulo
-     */
-    public double getY()
-    {
-        return y;
+        return new Ponto(centro); 
     }
 
     /** Devolve o valor do raio do circulo
@@ -67,25 +56,16 @@ public class Circulo
      */
     public double getRaio()
     {
-        return raio;
+        return this.raio;
     }
 
     /**
      * Atualizar o valor da coordenada em x do centro do circulo
-     * @param x novo valor para a coordenada em x do centro do circulo
+     * @param centro Novo valor para as coordenadas do centro
      */
-    public void setX (double x)
+    public void setCentro (Ponto centro)
     {
-        this.x = x;
-    }
-    
-    /**
-     * Atualizar o valor da coordenada em y do centro do circulo
-     * @param y novo valor para a coordenanda em x do centro do circulo
-     */
-    public void setY (double y)
-    {
-        this.y = y;
+        this.centro = new Ponto(centro);
     }
 
     public void setRaio (double raio)
@@ -95,7 +75,7 @@ public class Circulo
 
     public String toString() 
     {
-        return "X: " + this.x + " Y: " + this.y + " Raio: " + this.raio;
+        return "Circulo: " + this.centro.toString() + " Raio: " + this.raio;
     }
 
     public Circulo clone()
@@ -103,22 +83,21 @@ public class Circulo
         return new Circulo(this);
     }
 
-    public boolean equals (Object o)
+    public boolean equals (Object obj)
     {
-        if (this == o)
+        if (this == obj)
             return true;
         
-        if ((o==null) || (this.getClass() != o.getClass()))
+        if ((obj==null) || (this.getClass() != obj.getClass()))
             return false;
         
-        Circulo c = (Circulo) o;
-        return (this.x == c.getX()) && (this.y == c.getY()) && (this.raio == c.getRaio());
+        Circulo c = (Circulo) obj;
+        return (this.centro.equals(c.getCentro())) && (this.raio == c.getRaio());
     }
 
-    public void alteraCentro(double x, double y)
+    public void alteraCentro(Ponto umPonto)
     {
-        this.x = x;
-        this.y = y;
+        this.setCentro(umPonto);
     }
 
     public double calculaArea()
